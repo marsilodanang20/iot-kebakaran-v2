@@ -98,24 +98,24 @@
                 <div class="device-stats">
                     <div class="stat-item">
                         <ion-icon name="thermometer"></ion-icon>
-                        <span class="stat-value" [class.danger]="device.lastStatus === 'BAHAYA'">
-                            {{ device.lastTemp ?? '--' }}°C
+                        <span class="stat-value" [class.danger]="device.status === 'offline'">
+                            {{ device.suhu_terakhir ?? '--' }}°C
                         </span>
                         <span class="stat-label">Last Temp</span>
                     </div>
                     <div class="stat-divider"></div>
                     <div class="stat-item">
                         <ion-icon name="pulse"></ion-icon>
-                        <ion-chip [color]="device.lastStatus === 'BAHAYA' ? 'danger' : 'success'" class="status-chip">
-                            {{ device.lastStatus ?? 'N/A' }}
-                        </ion-chip>
-                        <span class="stat-label">Status</span>
+                        <ion-badge [color]="device.status === 'online' ? 'success' : 'medium'" class="status-badge">
+                            {{ device.status }}
+                        </ion-badge>
+                        <span class="stat-label">Connection</span>
                     </div>
                     <div class="stat-divider"></div>
                     <div class="stat-item">
                         <ion-icon name="time"></ion-icon>
-                        <span class="stat-value">{{ formatTime(device.lastUpdate) }}</span>
-                        <span class="stat-label">{{ formatDate(device.lastUpdate) }}</span>
+                        <span class="stat-value">{{ formatTime(device.last_seen) }}</span>
+                        <span class="stat-label">{{ formatDate(device.last_seen) }}</span>
                     </div>
                 </div>
             </ion-card-content>

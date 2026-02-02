@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { OnDestroy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     IonHeader,
@@ -11,7 +11,8 @@ import {
     IonCardContent,
     IonIcon,
     IonSpinner,
-    IonChip
+    IonChip,
+    IonBadge
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -28,18 +29,9 @@ import {
     closeCircle,
     pulse
 } from 'ionicons/icons';
+import { interval, Subscription } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
-import { SensorLog } from '../../core/models/sensor.model';
-
-interface DeviceInfo {
-    id: number;
-    name: string;
-    lokasi: string;
-    status: 'online' | 'offline';
-    lastTemp?: number;
-    lastStatus?: string;
-    lastUpdate?: string;
-}
+import { Device } from '../../core/models/sensor.model';
 
 @Component({
     selector: 'app-devices',
@@ -57,14 +49,16 @@ interface DeviceInfo {
         IonCardContent,
         IonIcon,
         IonSpinner,
-        IonChip
+        IonChip,
+        IonBadge
     ]
 })
-export class DevicesPage implements OnInit {
+export class DevicesPage implements OnInit, OnDestroy {
     private apiService = inject(ApiService);
+    private refreshSub?: Subscription;
 
     isLoading = signal(true);
-    devices = signal<DeviceInfo[]>([]);
+    devices = signal<Device[]>([]);
 
     constructor() {
         addIcons({
@@ -85,33 +79,24 @@ export class DevicesPage implements OnInit {
 
     ngOnInit() {
         this.loadDevices();
+
+        // Polling every 10 seconds for real-time status
+        this.refreshSub = interval(10000).subscribe(() => {
+            this.loadDevices(false);
+        });
     }
 
-    loadDevices() {
-        this.isLoading.set(true);
+    ngOnDestroy() {
+        this.refreshSub?.unsubscribe();
+    }
 
-        // Since we don't have a dedicated devices endpoint, 
-        // we'll derive device info from sensor logs
-        this.apiService.getSensorLogs(1, 50).subscribe({
+    loadDevices(showLoading = true) {
+        if (showLoading) this.isLoading.set(true);
+
+        this.apiService.getDevices().subscribe({
             next: (response) => {
                 if (response.data) {
-                    const deviceMap = new Map<string, DeviceInfo>();
-
-                    response.data.forEach((log: SensorLog, index: number) => {
-                        if (!deviceMap.has(log.lokasi)) {
-                            deviceMap.set(log.lokasi, {
-                                id: index + 1,
-                                name: `Sensor ${log.lokasi}`,
-                                lokasi: log.lokasi,
-                                status: 'online', // Assume online if we have recent data
-                                lastTemp: log.suhu,
-                                lastStatus: log.status,
-                                lastUpdate: log.waktu
-                            });
-                        }
-                    });
-
-                    this.devices.set(Array.from(deviceMap.values()));
+                    this.devices.set(response.data);
                 }
                 this.isLoading.set(false);
             },
@@ -122,7 +107,7 @@ export class DevicesPage implements OnInit {
     }
 
     handleRefresh(event: any) {
-        this.loadDevices();
+        this.loadDevices(false);
         setTimeout(() => event.target.complete(), 1000);
     }
 

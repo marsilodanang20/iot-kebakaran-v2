@@ -48,6 +48,7 @@ import {
     trendingDown
 } from 'ionicons/icons';
 import { interval, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 import { SettingsService } from '../../core/services/settings.service';
 import { SensorLog, DashboardStats } from '../../core/models/sensor.model';
@@ -83,6 +84,7 @@ import { SensorLog, DashboardStats } from '../../core/models/sensor.model';
 export class DashboardPage implements OnInit, OnDestroy {
     private apiService = inject(ApiService);
     public settingsService = inject(SettingsService);
+    private router = inject(Router);
     private refreshSubscription?: Subscription;
 
     // Reactive state
@@ -240,6 +242,10 @@ export class DashboardPage implements OnInit, OnDestroy {
         setTimeout(() => {
             event.target.complete();
         }, 1000);
+    }
+
+    goToAlerts() {
+        this.router.navigateByUrl('/alerts');
     }
 
     // Determine card class based on STATUS (DANGER/SAFE)

@@ -130,11 +130,11 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-            <ion-button expand="block" color="danger" class="emergency-btn">
+            <ion-button expand="block" color="danger" class="emergency-btn" (click)="callEmergency()">
                 <ion-icon name="call" slot="start"></ion-icon>
                 {{ settingsService.t().CALL_EMERGENCY }}
             </ion-button>
-            <ion-button expand="block" fill="outline" class="share-btn">
+            <ion-button expand="block" fill="outline" class="share-btn" (click)="shareAlert()">
                 <ion-icon name="share-outline" slot="start"></ion-icon>
                 {{ settingsService.t().SHARE_ALERT }}
             </ion-button>

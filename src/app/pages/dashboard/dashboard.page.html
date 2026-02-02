@@ -1,10 +1,7 @@
 <ion-header class="ion-no-border">
     <ion-toolbar>
-        <ion-title>
-            <div class="header-title">
-                <ion-icon name="flame" color="primary"></ion-icon>
-                <span>{{ settingsService.t().DASHBOARD }}</span>
-            </div>
+        <ion-title class="ion-text-center">
+            {{ settingsService.t().DASHBOARD }}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -157,10 +154,9 @@
             </ion-card-content>
         </ion-card>
 
-        <!-- Recent Activity -->
         <div class="section-header">
             <h3>{{ settingsService.t().RECENT_ACTIVITY }}</h3>
-            <ion-button fill="clear" size="small" routerLink="/alerts">
+            <ion-button fill="clear" size="small" (click)="goToAlerts()">
                 {{ settingsService.t().VIEW_ALL }}
             </ion-button>
         </div>

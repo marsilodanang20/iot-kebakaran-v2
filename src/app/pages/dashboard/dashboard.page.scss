@@ -11,19 +11,13 @@
 }
 
 // Header
-.header-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+ion-toolbar {
+    --background: var(--ion-background-color);
+}
 
-    ion-icon {
-        font-size: 24px;
-        color: var(--ion-color-primary);
-    }
-
-    span {
-        font-weight: 600;
-    }
+ion-title {
+    font-weight: 700;
+    text-align: center;
 }
 
 // Last Updated

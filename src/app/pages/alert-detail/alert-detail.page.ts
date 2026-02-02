@@ -168,4 +168,37 @@ export class AlertDetailPage implements OnInit {
     goBack() {
         this.router.navigate(['/alerts']);
     }
+
+    callEmergency() {
+        window.location.href = 'tel:112';
+    }
+
+    async shareAlert() {
+        const alertData = this.alert();
+        if (!alertData) return;
+
+        const status = alertData.type === 'danger' ? '🔥 DANGER' : '✅ SAFE';
+        const time = this.formatDateTime(alertData.waktu);
+        const text = `[IoT Fire Detection]\nStatus: ${status}\nLokasi: ${alertData.lokasi}\nWaktu: ${time}\nSuhu: ${alertData.suhu}°C`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Fire Detection Alert',
+                    text: text,
+                    url: window.location.href
+                });
+            } catch (err) {
+                console.log('Share failed', err);
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            try {
+                await navigator.clipboard.writeText(text);
+                alert('Alert info copied to clipboard!');
+            } catch (err) {
+                console.error('Clipboard failed', err);
+            }
+        }
+    }
 }

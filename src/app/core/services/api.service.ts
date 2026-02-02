@@ -132,14 +132,21 @@ export class ApiService {
                     }
                 });
 
-                const devices: Device[] = Array.from(uniqueLocs.values()).map((log, index) => ({
-                    id: index + 1,
-                    name: `Sensor ${log.lokasi}`,
-                    lokasi: log.lokasi,
-                    status: 'online', // Assumed online if in recent logs
-                    suhu_terakhir: log.suhu,
-                    last_seen: log.waktu
-                }));
+                const now = new Date();
+                const devices: Device[] = Array.from(uniqueLocs.values()).map((log, index) => {
+                    const lastSeen = new Date(log.waktu);
+                    // If last seen more than 2 minutes ago, consider offline
+                    const isOffline = (now.getTime() - lastSeen.getTime()) > (2 * 60 * 1000);
+
+                    return {
+                        id: index + 1,
+                        name: `Sensor ${log.lokasi}`,
+                        lokasi: log.lokasi,
+                        status: isOffline ? 'offline' : 'online',
+                        suhu_terakhir: log.suhu,
+                        last_seen: log.waktu
+                    };
+                });
 
                 return { success: true, data: devices };
             })
