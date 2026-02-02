@@ -1,0 +1,28 @@
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="dashboard">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>{{ settingsService.t().TAB_DASHBOARD }}</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="analytics">
+      <ion-icon name="stats-chart-outline"></ion-icon>
+      <ion-label>{{ settingsService.t().TAB_ANALYTICS }}</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="devices">
+      <ion-icon name="hardware-chip-outline"></ion-icon>
+      <ion-label>{{ settingsService.t().TAB_DEVICES }}</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="alerts">
+      <ion-icon name="time-outline"></ion-icon>
+      <ion-label>{{ settingsService.t().TAB_HISTORY }}</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="settings">
+      <ion-icon name="settings-outline"></ion-icon>
+      <ion-label>{{ settingsService.t().TAB_SETTINGS }}</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

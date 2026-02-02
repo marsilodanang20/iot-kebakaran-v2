@@ -1,0 +1,127 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-title>Devices</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="devices-content">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Devices</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <div class="devices-container">
+        @if (isLoading()) {
+        <div class="loading-container">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+            <p>Loading devices...</p>
+        </div>
+        } @else {
+        <!-- Device Summary -->
+        <ion-card class="summary-card">
+            <ion-card-content>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-icon total">
+                            <ion-icon name="hardware-chip"></ion-icon>
+                        </div>
+                        <div class="summary-info">
+                            <span class="summary-value">{{ devices().length }}</span>
+                            <span class="summary-label">Total Devices</span>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon online">
+                            <ion-icon name="wifi"></ion-icon>
+                        </div>
+                        <div class="summary-info">
+                            <span class="summary-value">{{ getOnlineCount() }}</span>
+                            <span class="summary-label">Online</span>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon offline">
+                            <ion-icon name="close-circle"></ion-icon>
+                        </div>
+                        <div class="summary-info">
+                            <span class="summary-value">{{ getOfflineCount() }}</span>
+                            <span class="summary-label">Offline</span>
+                        </div>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Device List -->
+        <div class="section-header">
+            <h3>All Devices</h3>
+        </div>
+
+        @if (devices().length === 0) {
+        <ion-card class="empty-card">
+            <ion-card-content>
+                <div class="empty-state">
+                    <ion-icon name="hardware-chip-outline"></ion-icon>
+                    <h4>No Devices Found</h4>
+                    <p>No sensor devices are currently registered in the system.</p>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        } @else {
+        @for (device of devices(); track device.id) {
+        <ion-card class="device-card" [class.offline]="device.status === 'offline'">
+            <ion-card-content>
+                <div class="device-header">
+                    <div class="device-icon">
+                        <ion-icon name="hardware-chip"></ion-icon>
+                    </div>
+                    <div class="device-info">
+                        <h3>{{ device.name }}</h3>
+                        <div class="device-location">
+                            <ion-icon name="location-outline"></ion-icon>
+                            <span>{{ device.lokasi }}</span>
+                        </div>
+                    </div>
+                    <div class="device-status">
+                        <div class="status-indicator" [class]="device.status">
+                            <ion-icon name="ellipse"></ion-icon>
+                        </div>
+                        <span>{{ device.status === 'online' ? 'Online' : 'Offline' }}</span>
+                    </div>
+                </div>
+
+                <div class="device-stats">
+                    <div class="stat-item">
+                        <ion-icon name="thermometer"></ion-icon>
+                        <span class="stat-value" [class.danger]="device.lastStatus === 'BAHAYA'">
+                            {{ device.lastTemp ?? '--' }}°C
+                        </span>
+                        <span class="stat-label">Last Temp</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <ion-icon name="pulse"></ion-icon>
+                        <ion-chip [color]="device.lastStatus === 'BAHAYA' ? 'danger' : 'success'" class="status-chip">
+                            {{ device.lastStatus ?? 'N/A' }}
+                        </ion-chip>
+                        <span class="stat-label">Status</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <ion-icon name="time"></ion-icon>
+                        <span class="stat-value">{{ formatTime(device.lastUpdate) }}</span>
+                        <span class="stat-label">{{ formatDate(device.lastUpdate) }}</span>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        }
+        }
+        }
+    </div>
+</ion-content>

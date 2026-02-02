@@ -1,0 +1,134 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-title>Analytics</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="analytics-content">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Analytics</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <div class="analytics-container">
+        <!-- Period Selector -->
+        <ion-segment [value]="selectedPeriod()" (ionChange)="onPeriodChange($event)">
+            <ion-segment-button value="6h">
+                <ion-label>6H</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="24h">
+                <ion-label>24H</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="7d">
+                <ion-label>7D</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+
+        @if (isLoading()) {
+        <div class="loading-container">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+            <p>Loading analytics...</p>
+        </div>
+        } @else {
+        <!-- Temperature Chart Card -->
+        <ion-card class="chart-card">
+            <ion-card-header>
+                <ion-card-title>
+                    <ion-icon name="thermometer"></ion-icon>
+                    Temperature Trend
+                </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="chart-container">
+                    <canvas #chartCanvas></canvas>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Stats Summary -->
+        <div class="stats-row">
+            <ion-card class="mini-stat-card">
+                <ion-card-content>
+                    <div class="mini-stat-icon avg">
+                        <ion-icon name="bar-chart"></ion-icon>
+                    </div>
+                    <div class="mini-stat-value">{{ getAverageTemp().toFixed(1) }}°</div>
+                    <div class="mini-stat-label">Average</div>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="mini-stat-card">
+                <ion-card-content>
+                    <div class="mini-stat-icon max">
+                        <ion-icon name="trending-up"></ion-icon>
+                    </div>
+                    <div class="mini-stat-value">{{ getMaxTemp().toFixed(1) }}°</div>
+                    <div class="mini-stat-label">Maximum</div>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="mini-stat-card">
+                <ion-card-content>
+                    <div class="mini-stat-icon min">
+                        <ion-icon name="trending-down"></ion-icon>
+                    </div>
+                    <div class="mini-stat-value">{{ getMinTemp().toFixed(1) }}°</div>
+                    <div class="mini-stat-label">Minimum</div>
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+        <!-- Alert Summary -->
+        <ion-card class="alert-summary-card">
+            <ion-card-content>
+                <div class="alert-summary">
+                    <div class="summary-item">
+                        <span class="summary-value danger">{{ getDangerCount() }}</span>
+                        <span class="summary-label">Danger Alerts</span>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-item">
+                        <span class="summary-value safe">{{ temperatureHistory().length - getDangerCount() }}</span>
+                        <span class="summary-label">Safe Readings</span>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-item">
+                        <span class="summary-value total">{{ temperatureHistory().length }}</span>
+                        <span class="summary-label">Total Records</span>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Recent Readings -->
+        <ion-card class="readings-card">
+            <ion-card-header>
+                <ion-card-title>Recent Readings</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-list lines="none">
+                    @for (log of temperatureHistory().slice(0, 10); track log.id) {
+                    <ion-item>
+                        <div class="reading-temp" slot="start" [class.danger]="log.status === 'BAHAYA'">
+                            {{ log.suhu }}°C
+                        </div>
+                        <ion-label>
+                            <h3>{{ log.lokasi }}</h3>
+                            <p>{{ formatTime(log.waktu) }}</p>
+                        </ion-label>
+                        <ion-badge slot="end" [color]="log.status === 'BAHAYA' ? 'danger' : 'success'">
+                            {{ log.status }}
+                        </ion-badge>
+                    </ion-item>
+                    }
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+        }
+    </div>
+</ion-content>

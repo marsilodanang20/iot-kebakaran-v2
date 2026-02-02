@@ -1,0 +1,205 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-title>
+            <div class="header-title">
+                <ion-icon name="flame" color="primary"></ion-icon>
+                <span>{{ settingsService.t().DASHBOARD }}</span>
+            </div>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="dashboard-content">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <!-- Collapsible Header -->
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">{{ settingsService.t().DASHBOARD }}</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <div class="dashboard-container">
+        <!-- Last Updated -->
+        <div class="last-updated">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ settingsService.t().LAST_UPDATED }}: {{ formatLastUpdated() }}</span>
+        </div>
+
+        <!-- Loading State -->
+        @if (isLoading()) {
+        <div class="loading-container">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+            <p>{{ settingsService.t().LOADING }}</p>
+        </div>
+        } @else {
+        <!-- Primary KPI Card - Temperature -->
+        <!-- Use getMoodClass to toggle status-danger / status-safe -->
+        <ion-card class="kpi-card primary-kpi" [class]="getMoodClass(latestLog()?.status)">
+            <ion-card-content>
+                <div class="kpi-header">
+                    <div class="kpi-icon-wrapper">
+                        <ion-icon name="thermometer"></ion-icon>
+                    </div>
+                    <!-- Display translated status label -->
+                    <ion-badge [color]="latestLog()?.status === 'BAHAYA' ? 'danger' : 'success'">
+                        {{ settingsService.getStatusLabel(latestLog()?.status || 'AMNA') }}
+                    </ion-badge>
+                </div>
+
+                <div class="kpi-value">
+                    <span class="temperature-value">{{ settingsService.getTemp(latestLog()?.suhu || 0) }}</span>
+                    <span class="temperature-unit">{{ settingsService.getTempUnitLabel() }}</span>
+                </div>
+
+                <div class="kpi-label">{{ settingsService.t().CURRENT_TEMP }}</div>
+
+                <div class="kpi-meta">
+                    <div class="meta-item">
+                        <ion-icon name="location-outline"></ion-icon>
+                        <span>{{ latestLog()?.lokasi || 'Unknown' }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <ion-icon name="time-outline"></ion-icon>
+                        <span>{{ latestLog()?.waktu ? formatTime(latestLog()!.waktu) : '--:--' }}</span>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Stats Grid -->
+        <ion-grid class="stats-grid">
+            <ion-row>
+                <!-- Safe Count -->
+                <ion-col size="6">
+                    <ion-card class="stat-card safe-card">
+                        <ion-card-content>
+                            <div class="stat-icon">
+                                <ion-icon name="shield-checkmark"></ion-icon>
+                            </div>
+                            <div class="stat-value">{{ stats()?.safe_count || 0 }}</div>
+                            <div class="stat-label">{{ settingsService.t().SAFE_READINGS }}</div>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+
+                <!-- Danger Count -->
+                <ion-col size="6">
+                    <ion-card class="stat-card danger-card">
+                        <ion-card-content>
+                            <div class="stat-icon">
+                                <ion-icon name="warning"></ion-icon>
+                            </div>
+                            <div class="stat-value">{{ stats()?.danger_count || 0 }}</div>
+                            <div class="stat-label">{{ settingsService.t().DANGER_ALERTS }}</div>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <!-- Active Devices -->
+                <ion-col size="6">
+                    <ion-card class="stat-card devices-card">
+                        <ion-card-content>
+                            <div class="stat-icon">
+                                <ion-icon name="hardware-chip"></ion-icon>
+                            </div>
+                            <div class="stat-value">{{ stats()?.total_devices || 0 }}</div>
+                            <div class="stat-label">{{ settingsService.t().ACTIVE_DEVICES }}</div>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+
+                <!-- Average Temp -->
+                <ion-col size="6">
+                    <ion-card class="stat-card avg-card">
+                        <ion-card-content>
+                            <div class="stat-icon">
+                                <ion-icon name="trending-up"></ion-icon>
+                            </div>
+                            <div class="stat-value">{{ settingsService.getTemp(stats()?.average_temperature || 0) }}°
+                            </div>
+                            <div class="stat-label">{{ settingsService.t().AVG_TEMP }}</div>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <!-- Temperature Range Card -->
+        <ion-card class="range-card">
+            <ion-card-header>
+                <ion-card-title>{{ settingsService.t().TEMP_RANGE }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="range-container">
+                    <div class="range-item min">
+                        <ion-icon name="trending-down" color="primary"></ion-icon>
+                        <div class="range-info">
+                            <span class="range-value">{{ settingsService.getTemp(stats()?.min_temperature || 0) }}{{
+                                settingsService.getTempUnitLabel() }}</span>
+                            <span class="range-label">{{ settingsService.t().MINIMUM }}</span>
+                        </div>
+                    </div>
+                    <div class="range-divider"></div>
+                    <div class="range-item max">
+                        <ion-icon name="trending-up" color="danger"></ion-icon>
+                        <div class="range-info">
+                            <span class="range-value">{{ settingsService.getTemp(stats()?.max_temperature || 0) }}{{
+                                settingsService.getTempUnitLabel() }}</span>
+                            <span class="range-label">{{ settingsService.t().MAXIMUM }}</span>
+                        </div>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Recent Activity -->
+        <div class="section-header">
+            <h3>{{ settingsService.t().RECENT_ACTIVITY }}</h3>
+            <ion-button fill="clear" size="small" routerLink="/alerts">
+                {{ settingsService.t().VIEW_ALL }}
+            </ion-button>
+        </div>
+
+        <ion-card class="activity-card">
+            <ion-card-content>
+                @if (recentLogs().length === 0) {
+                <div class="empty-state">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    <p>{{ settingsService.t().NO_DATA }}</p>
+                </div>
+                } @else {
+                <ion-list lines="none">
+                    @for (log of recentLogs(); track log.id) {
+                    <!-- Use getMoodClass mapped to status-safe/danger -->
+                    <ion-item class="activity-item" [class]="getMoodClass(log.status)">
+                        <div class="activity-indicator" slot="start">
+                            <ion-icon [name]="log.status === 'BAHAYA' ? 'alert-circle' : 'checkmark-circle'"></ion-icon>
+                        </div>
+                        <ion-label>
+                            <h3>{{ log.lokasi }}</h3>
+                            <p>
+                                <span class="activity-temp">{{ settingsService.getTemp(log.suhu) }}{{
+                                    settingsService.getTempUnitLabel() }}</span>
+                                <span class="activity-status" [class]="log.status.toLowerCase()">
+                                    {{ settingsService.getStatusLabel(log.status) }}
+                                </span>
+                            </p>
+                        </ion-label>
+                        <div class="activity-time" slot="end">
+                            <span class="time">{{ formatTime(log.waktu) }}</span>
+                            <span class="date">{{ formatDate(log.waktu) }}</span>
+                        </div>
+                    </ion-item>
+                    }
+                </ion-list>
+                }
+            </ion-card-content>
+        </ion-card>
+        }
+    </div>
+</ion-content>

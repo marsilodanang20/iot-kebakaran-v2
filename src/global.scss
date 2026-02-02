@@ -1,0 +1,240 @@
+/*
+ * IoT Fire Detection App - Global Styles
+ * ============================================================================
+ * Premium styling for enterprise IoT fire detection monitoring system
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* REMOVED: dark.system.css to prevent system override of manual toggle */
+/* @import '@ionic/angular/css/palettes/dark.system.css'; */
+
+/* ============================================================================
+   CSS Variables - Light Theme (TRUE WHITE)
+   ============================================================================ */
+:root {
+    /* Primary Colors */
+    --ion-color-primary: #667eea;
+    --ion-color-primary-rgb: 102, 126, 234;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #5a6fce;
+    --ion-color-primary-tint: #758aec;
+
+    /* Secondary Colors */
+    --ion-color-secondary: #764ba2;
+    --ion-color-secondary-rgb: 118, 75, 162;
+    --ion-color-secondary-contrast: #ffffff;
+    --ion-color-secondary-contrast-rgb: 255, 255, 255;
+
+    /* Success/Safe Color */
+    --ion-color-success: #11998e;
+    --ion-color-success-rgb: 17, 153, 142;
+    --ion-color-success-contrast: #ffffff;
+
+    /* Danger Color */
+    --ion-color-danger: #eb3349;
+    --ion-color-danger-rgb: 235, 51, 73;
+    --ion-color-danger-contrast: #ffffff;
+
+    /* Warning Color */
+    --ion-color-warning: #f5a623;
+    --ion-color-warning-rgb: 245, 166, 35;
+    --ion-color-warning-contrast: #000000;
+
+    /* Background Colors - TRUE WHITE */
+    --ion-background-color: #ffffff;
+    --ion-background-color-rgb: 255, 255, 255;
+
+    /* Card Background - TRUE WHITE */
+    --ion-card-background: #ffffff;
+
+    /* Tab Bar & Toolbar */
+    --ion-tab-bar-background: #ffffff;
+    --ion-toolbar-background: #ffffff;
+
+    /* Item Background */
+    --ion-item-background: #ffffff;
+
+    /* Text Colors */
+    --ion-text-color: #000000;
+    --ion-text-color-rgb: 0, 0, 0;
+
+    /* Borders */
+    --ion-border-color: #e0e0e0;
+
+    /* Border Radius */
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 20px;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================================
+   CSS Variables - Dark Theme (TRUE BLACK)
+   ============================================================================ */
+.dark,
+.ion-palette-dark {
+    /* TRUE BLACK BACKGROUNDS */
+    --ion-background-color: #000000;
+    --ion-background-color-rgb: 0, 0, 0;
+
+    --ion-card-background: #000000;
+    /* Hitam Full per request */
+
+    --ion-tab-bar-background: #000000;
+    --ion-toolbar-background: #000000;
+
+    --ion-item-background: #000000;
+
+    --ion-text-color: #ffffff;
+    --ion-text-color-rgb: 255, 255, 255;
+
+    /* Adjust borders for visibility on black */
+    --ion-border-color: #333333;
+
+    /* Shadows for dark mode */
+    --shadow-sm: 0 2px 8px rgba(255, 255, 255, 0.1);
+    --shadow-md: 0 4px 16px rgba(255, 255, 255, 0.05);
+    --shadow-lg: 0 8px 32px rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================================
+   Global Styles & Strict Overrides
+   ============================================================================ */
+
+/* Enforce Backgrounds on Core Components */
+ion-app {
+    background: var(--ion-background-color) !important;
+}
+
+ion-content {
+    --background: var(--ion-background-color) !important;
+}
+
+ion-page {
+    background-color: var(--ion-background-color) !important;
+}
+
+ion-toolbar {
+    --background: var(--ion-toolbar-background) !important;
+    background: var(--ion-toolbar-background) !important;
+}
+
+ion-tab-bar {
+    --background: var(--ion-tab-bar-background) !important;
+    background: var(--ion-tab-bar-background) !important;
+    border-top: 1px solid var(--ion-border-color);
+}
+
+ion-card {
+    --background: var(--ion-card-background) !important;
+    background: var(--ion-card-background) !important;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    margin: 0;
+}
+
+/* Add border to cards in dark mode to distinguish them from black background */
+.dark ion-card {
+    border: 1px solid #333333;
+}
+
+/* Ensure body respects theme */
+body {
+    background-color: var(--ion-background-color);
+    color: var(--ion-text-color);
+}
+
+/* Smooth scrolling */
+ion-content {
+    --keyboard-offset: 0px;
+
+    &::part(scroll) {
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Fix for iOS safe area */
+ion-content {
+    --padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* List styling */
+ion-list {
+    background: transparent;
+}
+
+/* Item styling */
+ion-item {
+    --background: transparent;
+    --border-color: var(--ion-border-color);
+}
+
+/* Better buttons */
+ion-button {
+    --border-radius: var(--border-radius-md);
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0.3px;
+}
+
+/* Badge styling */
+ion-badge {
+    border-radius: 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Segment Button Text Color Fix (Global) */
+ion-segment-button {
+    --color-checked: #ffffff;
+}
+
+/* Scrollbar styling (for web) */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Utility classes */
+.font-bold {
+    font-weight: 700;
+}
+
+.text-center {
+    text-align: center;
+}

@@ -1,0 +1,452 @@
+// Dashboard Page Styles
+// Premium IoT Fire Detection Dashboard
+
+.dashboard-content {
+    --background: var(--ion-background-color);
+}
+
+.dashboard-container {
+    padding: 16px;
+    padding-bottom: 100px;
+}
+
+// Header
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    ion-icon {
+        font-size: 24px;
+        color: var(--ion-color-primary);
+    }
+
+    span {
+        font-weight: 600;
+    }
+}
+
+// Last Updated
+.last-updated {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: var(--ion-color-medium);
+
+    ion-icon {
+        font-size: 14px;
+    }
+}
+
+// Loading
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+
+    ion-spinner {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 16px;
+    }
+
+    p {
+        color: var(--ion-color-medium);
+        font-size: 14px;
+    }
+}
+
+// KPI Card
+.kpi-card {
+    border-radius: 20px;
+    margin: 0 0 20px 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &.primary-kpi {
+        color: white;
+
+        ion-card-content {
+            padding: 24px;
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .kpi-icon-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+
+            ion-icon {
+                font-size: 28px;
+                color: white;
+            }
+        }
+
+        ion-badge {
+            --padding-start: 12px;
+            --padding-end: 12px;
+            --padding-top: 6px;
+            --padding-bottom: 6px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            margin-bottom: 8px;
+
+            .temperature-value {
+                font-size: 72px;
+                font-weight: 700;
+                line-height: 1;
+                letter-spacing: -2px;
+            }
+
+            .temperature-unit {
+                font-size: 32px;
+                font-weight: 300;
+                opacity: 0.9;
+                margin-left: 4px;
+            }
+        }
+
+        .kpi-label {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .kpi-meta {
+            display: flex;
+            gap: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+
+            .meta-item {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 13px;
+                opacity: 0.9;
+
+                ion-icon {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    // STATE STYLES
+    &.status-safe {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+        box-shadow: 0 8px 32px rgba(17, 153, 142, 0.2);
+
+        ion-badge {
+            --background: rgba(255, 255, 255, 0.2);
+            --color: white;
+        }
+    }
+
+    &.status-danger {
+        // High contrast RED
+        background: linear-gradient(135deg, #d31027 0%, #ea384d 100%) !important;
+        box-shadow: 0 12px 40px rgba(211, 16, 39, 0.5);
+        animation: pulse-danger 2s infinite;
+
+        .kpi-icon-wrapper {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+
+            ion-icon {
+                font-size: 32px; // Larger icon
+            }
+        }
+
+        ion-badge {
+            --background: white; // White bg for readibility
+            --color: #d31027; // Red text
+            font-size: 14px; // Larger font
+            font-weight: 800; // Extra bold
+            padding: 8px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .temperature-value {
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+    }
+}
+
+@keyframes pulse-danger {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 12px 40px rgba(211, 16, 39, 0.5);
+    }
+
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 12px 50px rgba(211, 16, 39, 0.7);
+    }
+}
+
+// Stats Grid
+.stats-grid {
+    padding: 0;
+    margin-bottom: 8px;
+
+    ion-row {
+        margin-bottom: 0;
+    }
+
+    ion-col {
+        padding: 6px;
+    }
+}
+
+.stat-card {
+    margin: 0;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    background: var(--ion-card-background);
+    height: 100%;
+
+    ion-card-content {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .stat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+
+        ion-icon {
+            font-size: 22px;
+            color: white;
+        }
+    }
+
+    .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--ion-text-color);
+        margin-bottom: 4px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+        color: var(--ion-color-medium);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    &.safe-card .stat-icon {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    &.danger-card .stat-icon {
+        background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+    }
+
+    &.devices-card .stat-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    &.avg-card .stat-icon {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+}
+
+// Range Card
+.range-card {
+    margin: 16px 0;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    background: var(--ion-card-background);
+
+    ion-card-header {
+        padding-bottom: 8px;
+    }
+
+    ion-card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--ion-text-color);
+    }
+
+    ion-card-content {
+        padding-top: 0;
+    }
+
+    .range-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 8px 0;
+    }
+
+    .range-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        ion-icon {
+            font-size: 28px;
+        }
+
+        .range-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .range-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ion-text-color);
+        }
+
+        .range-label {
+            font-size: 11px;
+            color: var(--ion-color-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .range-divider {
+        width: 1px;
+        height: 48px;
+        background: var(--ion-color-light, #e0e0e0);
+    }
+}
+
+// Activity Card
+.activity-card {
+    margin: 0;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    background: var(--ion-card-background);
+
+    ion-card-content {
+        padding: 8px 0;
+    }
+
+    ion-list {
+        background: transparent;
+        padding: 0;
+    }
+}
+
+.activity-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --background: transparent;
+    margin-bottom: 4px;
+
+    // Status colors handled in global or local scoped styles, 
+    // but here we ensure text colors obey theme
+
+    .activity-indicator {
+        //... (Use global rules)
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+
+        ion-icon {
+            font-size: 18px;
+        }
+    }
+
+    // Style adjustments
+    &.status-safe .activity-indicator {
+        background: rgba(17, 153, 142, 0.15);
+
+        ion-icon {
+            color: var(--ion-color-success);
+        }
+    }
+
+    &.status-danger .activity-indicator {
+        background: rgba(235, 51, 73, 0.15);
+
+        ion-icon {
+            color: var(--ion-color-danger);
+        }
+    }
+
+    h3 {
+        color: var(--ion-text-color);
+    }
+
+    .activity-time .time {
+        color: var(--ion-text-color);
+    }
+}
+
+// Section Header
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 12px 0;
+
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--ion-text-color);
+        margin: 0;
+    }
+}
+
+// Dark Mode Support
+:host-context(.dark) {
+    .dashboard-content {
+        --background: #000000;
+    }
+
+    .stat-card,
+    .range-card,
+    .activity-card {
+        background: #111111;
+        box-shadow: var(--shadow-md);
+    }
+
+    .range-divider {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
