@@ -61,8 +61,8 @@ Ensure you have the following installed:
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/your-username/iot-fire-detection-app.git
-    cd iot-fire-detection-app
+    git clone https://github.com/marsilodanang20/iot-kebakaran-v2.git
+    cd iot-kebakaran-v2
     ```
 
 2.  **Install Dependencies**
