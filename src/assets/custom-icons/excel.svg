@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 2 20 20">
+  <!-- File background -->
+  <rect x="3" y="2" width="14" height="20" rx="2" fill="#1D6F42"/>
+
+  <!-- Fold corner -->
+  <path d="M17 2L21 6V22H17V2Z" fill="#107C41"/>
+
+  <!-- X letter -->
+  <path d="M7.5 9L10 12L7.5 15H9.5L11 13.5L12.5 15H14.5L12 12L14.5 9H12.5L11 10.5L9.5 9H7.5Z"
+        fill="white"/>
+</svg>

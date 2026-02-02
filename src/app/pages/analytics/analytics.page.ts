@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActionSheetController, ToastController } from '@ionic/angular/standalone';
 import {
     IonHeader,
     IonToolbar,
@@ -18,7 +19,10 @@ import {
     IonSpinner,
     IonList,
     IonItem,
-    IonBadge
+    IonBadge,
+    IonButtons,
+    IonButton,
+    IonActionSheet
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -27,12 +31,17 @@ import {
     trendingUp,
     trendingDown,
     thermometer,
-    time,
     calendar,
     barChart,
-    analytics
+    analytics,
+    downloadOutline,
+    documentTextOutline,
+    gridOutline,
+    copyOutline,
+    documentOutline
 } from 'ionicons/icons';
 import { ApiService } from '../../core/services/api.service';
+import { ExportService } from '../../core/services/export.service';
 import { SensorLog } from '../../core/models/sensor.model';
 
 @Component({
@@ -58,13 +67,19 @@ import { SensorLog } from '../../core/models/sensor.model';
         IonSpinner,
         IonList,
         IonItem,
-        IonBadge
+        IonBadge,
+        IonButtons,
+        IonButton,
+        IonActionSheet
     ]
 })
 export class AnalyticsPage implements OnInit, AfterViewInit {
     @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
     private apiService = inject(ApiService);
+    private exportService = inject(ExportService);
+    private actionSheetCtrl = inject(ActionSheetController);
+    private toastCtrl = inject(ToastController);
 
     isLoading = signal(true);
     temperatureHistory = signal<SensorLog[]>([]);
@@ -81,10 +96,17 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
             trendingUp,
             trendingDown,
             thermometer,
-            time,
             calendar,
             barChart,
-            analytics
+            analytics,
+            downloadOutline,
+            documentTextOutline,
+            gridOutline,
+            copyOutline,
+            documentOutline,
+            'custom-pdf': 'assets/custom-icons/pdf.svg',
+            'custom-excel': 'assets/custom-icons/excel.svg',
+            'custom-csv': 'assets/custom-icons/csv.svg',
         });
     }
 
@@ -131,6 +153,80 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     handleRefresh(event: any) {
         this.loadTemperatureHistory();
         setTimeout(() => event.target.complete(), 1000);
+    }
+
+    async openExportMenu() {
+        const data = this.temperatureHistory();
+        if (data.length === 0) {
+            this.showToast('No data available to export', 'warning');
+            return;
+        }
+
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: 'Export Data Options',
+            subHeader: `Current Period: ${this.selectedPeriod().toUpperCase()}`,
+            buttons: [
+                {
+                    text: 'Export to PDF',
+                    icon: 'custom-pdf',
+                    cssClass: 'action-sheet-pdf',
+                    handler: () => {
+                        this.exportService.exportToPdf(data, `analytics-${this.selectedPeriod()}`, this.selectedPeriod().toUpperCase());
+                        this.showToast('PDF Exported successfully');
+                    }
+                },
+                {
+                    text: 'Export to Excel',
+                    icon: 'custom-excel',
+                    cssClass: 'action-sheet-excel',
+                    handler: () => {
+                        this.exportService.exportToExcel(data, `analytics-${this.selectedPeriod()}`);
+                        this.showToast('Excel Exported successfully');
+                    }
+                },
+                {
+                    text: 'Export to CSV',
+                    icon: 'custom-csv',
+                    cssClass: 'action-sheet-csv',
+                    handler: () => {
+                        this.exportService.exportToCsv(data, `analytics-${this.selectedPeriod()}`);
+                        this.showToast('CSV Exported successfully');
+                    }
+                },
+                {
+                    text: 'Copy to Clipboard',
+                    icon: 'copy-outline',
+                    cssClass: 'action-sheet-copy',
+                    handler: async () => {
+                        const success = await this.exportService.copyToClipboard(data);
+                        if (success) {
+                            this.showToast('Data copied to clipboard');
+                        } else {
+                            this.showToast('Failed to copy data', 'danger');
+                        }
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    data: {
+                        action: 'cancel'
+                    }
+                }
+            ]
+        });
+
+        await actionSheet.present();
+    }
+
+    private async showToast(message: string, color: 'success' | 'warning' | 'danger' | 'medium' = 'success') {
+        const toast = await this.toastCtrl.create({
+            message,
+            duration: 2000,
+            color,
+            position: 'bottom'
+        });
+        await toast.present();
     }
 
     drawChart() {

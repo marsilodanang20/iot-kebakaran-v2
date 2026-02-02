@@ -30,9 +30,14 @@
     "@capacitor/keyboard": "8.0.0",
     "@capacitor/status-bar": "8.0.0",
     "@ionic/angular": "^8.0.0",
+    "@types/papaparse": "^5.5.2",
     "ionicons": "^7.0.0",
+    "jspdf": "^4.1.0",
+    "jspdf-autotable": "^5.0.7",
+    "papaparse": "^5.5.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

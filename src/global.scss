@@ -116,6 +116,90 @@
     --shadow-sm: 0 2px 8px rgba(255, 255, 255, 0.1);
     --shadow-md: 0 4px 16px rgba(255, 255, 255, 0.05);
     --shadow-lg: 0 8px 32px rgba(255, 255, 255, 0.1);
+
+    /* Overlay Colors (ActionSheet, Alert, Modal) */
+    --ion-overlay-background-color: #1a1a1a;
+    --ion-color-step-50: #1a1a1a;
+    --ion-color-step-100: #262626;
+    --ion-color-step-150: #333333;
+    --ion-color-step-200: #404040;
+}
+
+/* ============================================================================
+   REAL IOS-STYLE ACTION SHEET (Glassmorphism + Transparency)
+   ============================================================================ */
+
+/* Light Mode Action Sheet */
+ion-action-sheet {
+    --background: rgba(255, 255, 255, 0.85);
+    /* Highly transparent white */
+    --backdrop-opacity: 0.4;
+    --button-background-selected: rgba(0, 0, 0, 0.05);
+    --color: #007aff;
+    /* System Blue */
+    --button-color: #007aff;
+}
+
+/* Dark Mode Action Sheet */
+.dark ion-action-sheet {
+    --background: rgba(30, 30, 30, 0.82);
+    /* Highly transparent dark grey */
+    --button-background: transparent;
+    --button-background-selected: rgba(255, 255, 255, 0.08);
+    --color: #0A84FF;
+    /* Dark Mode System Blue */
+    --button-color: #0A84FF;
+}
+
+/* Glassmorphism Effect for Groups */
+ion-action-sheet .action-sheet-group {
+    border-radius: 14px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    margin-bottom: 10px;
+    /* Floating Bottom */
+}
+
+/* Specific Button Styling */
+ion-action-sheet .action-sheet-button {
+    font-size: 17px;
+    /* iOS Standard */
+    font-weight: 400;
+    min-height: 56px;
+}
+
+/* Title Styling */
+ion-action-sheet .action-sheet-title {
+    font-size: 13px;
+    font-weight: 400;
+    color: #8a8a8e;
+    /* iOS Light Gray Text */
+    padding-bottom: 12px;
+}
+
+.dark ion-action-sheet .action-sheet-title {
+    color: #8e8e93;
+    /* iOS Dark Gray Text */
+}
+
+/* Destructive Button (if any) */
+ion-action-sheet .action-sheet-destructive {
+    color: #ff3b30 !important;
+}
+
+/* Cancel Button Styling (Bold & Separate) */
+ion-action-sheet .action-sheet-cancel {
+    font-weight: 600;
+}
+
+/* Dark Mode Specific Tweaks */
+.dark ion-action-sheet .action-sheet-group {
+    background: rgba(30, 30, 30, 0.82);
+}
+
+.dark ion-action-sheet .action-sheet-cancel {
+    background: rgba(30, 30, 30, 0.82);
 }
 
 /* ============================================================================
@@ -235,6 +319,36 @@ ion-segment-button {
     font-weight: 700;
 }
 
+
 .text-center {
     text-align: center;
+}
+
+/* Action Sheet Stylings */
+.action-sheet-pdf {
+    .action-sheet-icon {
+        color: #F40F02 !important;
+        /* PDF Format Red */
+    }
+}
+
+.action-sheet-excel {
+    .action-sheet-icon {
+        color: #1D6F42 !important;
+        /* Excel Green */
+    }
+}
+
+.action-sheet-csv {
+    .action-sheet-icon {
+        color: #217346 !important;
+        /* CSV Green/Dark */
+    }
+}
+
+.action-sheet-copy {
+    .action-sheet-icon {
+        color: #3880ff !important;
+        /* Ionic Blue */
+    }
 }
