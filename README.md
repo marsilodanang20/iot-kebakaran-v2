@@ -16,7 +16,11 @@ A modern, high-performance mobile dashboard application for monitoring IoT Fire 
 </p>
 <p align="center">
   <img src="src/assets/ss/ss-perangkat.png" width="30%" alt="Devices - Sensor Status" style="margin: 5px;" />
+  <img src="src/assets/ss/ss-riwayat-detail.png" width="30%" alt="History Detail" style="margin: 5px;" />
   <img src="src/assets/ss/ss-pengaturan.png" width="30%" alt="Settings - Configuration" style="margin: 5px;" />
+</p>
+<p align="center">
+  <img src="src/assets/ss/ss-popup-modal.png" width="30%" alt="Export Data - Modal" style="margin: 5px;" />
 </p>
 
 ## 📱 Features
@@ -26,7 +30,10 @@ A modern, high-performance mobile dashboard application for monitoring IoT Fire 
   - **Push Notifications**: Receive instant notifications when a sensor detects danger.
   - **Alert Sounds**: Plays a distinct alarm sound during danger states (Respects browser autoplay policies).
 - **History Logs**: View complete sensor history logs with sorting and filtering.
-- **Analytics**: Visual representation of temperature trends and device performance.
+- **Analytics**: 
+  - Visual representation of temperature trends and device performance.
+  - **Export Data Features**: Generate professional reports in **PDF, Excel (.xlsx), and CSV** formats.
+  - **Smart Actions**: Copy filtered data directly to system clipboard for quick sharing.
 - **Device Management**: List of active sensors and their last known locations.
 - **Customizable Settings**:
   - **Dark/Light Mode**: Full theme support including system preference detection.
