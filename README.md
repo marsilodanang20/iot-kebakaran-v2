@@ -12,15 +12,15 @@ A modern, high-performance mobile dashboard application for monitoring IoT Fire 
 <p align="center">
   <img src="src/assets/ss/ss-dashboard.png" width="30%" alt="Dashboard - Realtime Monitoring" style="margin: 5px;" />
   <img src="src/assets/ss/ss-statistik.png" width="30%" alt="Analytics - Temperature Trends" style="margin: 5px;" />
-  <img src="src/assets/ss/ss-riwayat.png" width="30%" alt="History - Sensor Logs" style="margin: 5px;" />
-</p>
-<p align="center">
   <img src="src/assets/ss/ss-perangkat.png" width="30%" alt="Devices - Sensor Status" style="margin: 5px;" />
-  <img src="src/assets/ss/ss-riwayat-detail.png" width="30%" alt="History Detail" style="margin: 5px;" />
-  <img src="src/assets/ss/ss-pengaturan.png" width="30%" alt="Settings - Configuration" style="margin: 5px;" />
 </p>
 <p align="center">
+  <img src="src/assets/ss/ss-riwayat.png" width="30%" alt="History - Sensor Logs" style="margin: 5px;" />
+  <img src="src/assets/ss/ss-pengaturan.png" width="30%" alt="Settings - Configuration" style="margin: 5px;" />
   <img src="src/assets/ss/ss-popup-modal.png" width="30%" alt="Export Data - Modal" style="margin: 5px;" />
+</p>
+<p align="center">
+  <img src="src/assets/ss/ss-riwayat-detail.png" width="30%" alt="History Detail" style="margin: 5px;" />
 </p>
 
 ## 📱 Features
@@ -61,8 +61,8 @@ Ensure you have the following installed:
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/your-username/iot-fire-detection-app.git
-    cd iot-fire-detection-app
+    git clone https://github.com/marsilodanang20/iot-kebakaran-v2.git
+    cd iot-kebakaran-v2
     ```
 
 2.  **Install Dependencies**
