@@ -162,17 +162,21 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
             return;
         }
 
+        // Check if on native platform and show platform info
+        const platform = this.exportService.getPlatform();
+        const isNative = this.exportService.isNativePlatform();
+
         const actionSheet = await this.actionSheetCtrl.create({
             header: 'Export Data Options',
-            subHeader: `Current Period: ${this.selectedPeriod().toUpperCase()}`,
+            subHeader: `Period: ${this.selectedPeriod().toUpperCase()} | Platform: ${platform.toUpperCase()}`,
             buttons: [
                 {
                     text: 'Export to PDF',
                     icon: 'custom-pdf',
                     cssClass: 'action-sheet-pdf',
                     handler: () => {
-                        this.exportService.exportToPdf(data, `analytics-${this.selectedPeriod()}`, this.selectedPeriod().toUpperCase());
-                        this.showToast('PDF Exported successfully');
+                        this.handlePdfExport(data);
+                        return true;
                     }
                 },
                 {
@@ -180,8 +184,8 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
                     icon: 'custom-excel',
                     cssClass: 'action-sheet-excel',
                     handler: () => {
-                        this.exportService.exportToExcel(data, `analytics-${this.selectedPeriod()}`);
-                        this.showToast('Excel Exported successfully');
+                        this.handleExcelExport(data);
+                        return true;
                     }
                 },
                 {
@@ -189,21 +193,17 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
                     icon: 'custom-csv',
                     cssClass: 'action-sheet-csv',
                     handler: () => {
-                        this.exportService.exportToCsv(data, `analytics-${this.selectedPeriod()}`);
-                        this.showToast('CSV Exported successfully');
+                        this.handleCsvExport(data);
+                        return true;
                     }
                 },
                 {
                     text: 'Copy to Clipboard',
                     icon: 'copy-outline',
                     cssClass: 'action-sheet-copy',
-                    handler: async () => {
-                        const success = await this.exportService.copyToClipboard(data);
-                        if (success) {
-                            this.showToast('Data copied to clipboard');
-                        } else {
-                            this.showToast('Failed to copy data', 'danger');
-                        }
+                    handler: () => {
+                        this.handleClipboardCopy(data);
+                        return true;
                     }
                 },
                 {
@@ -217,6 +217,90 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
         });
 
         await actionSheet.present();
+    }
+
+    /**
+     * Handle PDF Export with proper async/await
+     */
+    private async handlePdfExport(data: SensorLog[]) {
+        try {
+            const period = this.selectedPeriod();
+            const result = await this.exportService.exportToPdf(data, period, period.toUpperCase());
+
+            if (result.success) {
+                const message = result.platform === 'web'
+                    ? 'PDF downloaded successfully'
+                    : `PDF saved! Check your Documents folder`;
+                this.showToast(message, 'success');
+            } else {
+                this.showToast(result.message, 'danger');
+            }
+        } catch (error) {
+            console.error('PDF Export error:', error);
+            this.showToast('Failed to export PDF', 'danger');
+        }
+    }
+
+    /**
+     * Handle Excel Export with proper async/await
+     */
+    private async handleExcelExport(data: SensorLog[]) {
+        try {
+            const period = this.selectedPeriod();
+            const result = await this.exportService.exportToExcel(data, period);
+
+            if (result.success) {
+                const message = result.platform === 'web'
+                    ? 'Excel downloaded successfully'
+                    : `Excel saved! Check your Documents folder`;
+                this.showToast(message, 'success');
+            } else {
+                this.showToast(result.message, 'danger');
+            }
+        } catch (error) {
+            console.error('Excel Export error:', error);
+            this.showToast('Failed to export Excel', 'danger');
+        }
+    }
+
+    /**
+     * Handle CSV Export with proper async/await
+     */
+    private async handleCsvExport(data: SensorLog[]) {
+        try {
+            const period = this.selectedPeriod();
+            const result = await this.exportService.exportToCsv(data, period);
+
+            if (result.success) {
+                const message = result.platform === 'web'
+                    ? 'CSV downloaded successfully'
+                    : `CSV saved! Check your Documents folder`;
+                this.showToast(message, 'success');
+            } else {
+                this.showToast(result.message, 'danger');
+            }
+        } catch (error) {
+            console.error('CSV Export error:', error);
+            this.showToast('Failed to export CSV', 'danger');
+        }
+    }
+
+    /**
+     * Handle Clipboard Copy with proper async/await
+     */
+    private async handleClipboardCopy(data: SensorLog[]) {
+        try {
+            const result = await this.exportService.copyToClipboard(data);
+
+            if (result.success) {
+                this.showToast('Data copied to clipboard', 'success');
+            } else {
+                this.showToast(result.message, 'danger');
+            }
+        } catch (error) {
+            console.error('Clipboard copy error:', error);
+            this.showToast('Failed to copy data', 'danger');
+        }
     }
 
     private async showToast(message: string, color: 'success' | 'warning' | 'danger' | 'medium' = 'success') {
